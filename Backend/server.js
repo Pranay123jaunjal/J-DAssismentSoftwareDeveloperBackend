@@ -54,8 +54,7 @@ const frontendPath = path.join(__dirname, "..", "staticUi");
 
 app.use(express.static(frontendPath));
 
-app.get("/*", (req, res, next) => {
-  // If the request targets our API, skip this handler
+app.get(/.*/, (req, res, next) => {
   if (req.path.startsWith("/api/")) return next();
   res.sendFile(path.join(frontendPath, "index.html"), (err) => {
     if (err) {
