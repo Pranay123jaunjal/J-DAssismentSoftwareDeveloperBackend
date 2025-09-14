@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profiles UI — Projects & Skills</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="logo">Profile Manager</h1>
+    <div class="actions">
+      <input id="idInput" type="text" placeholder="Profile ID (for GET/UPDATE)" aria-label="Profile ID" />
+      <button id="getBtn">Get</button>
+      <button id="clearBtn" class="muted-btn">Clear</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Left column: All Profiles & Projects & Skills -->
+    <div>
+      <section class="card">
+        <h2>All Profiles</h2>
+        <div id="allStatus" class="muted">Loading...</div>
+        <ul id="allProfiles" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>All Projects</h2>
+        <div id="projStatus" class="muted">Loading...</div>
+        <ul id="allProjects" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>All Skills</h2>
+        <div id="skillsStatus" class="muted">Loading...</div>
+        <div id="allSkills" class="chips"></div>
+
+        <div style="margin-top:.6rem">
+          <strong>Search profiles by skills</strong>
+          <div id="searchSkillWrap" style="margin-top:.5rem">
+            <select id="skillSelect" multiple size="4" style="width:100%; padding:.45rem; border-radius:8px; background:transparent; color:inherit"></select>
+            <div style="margin-top:.5rem; display:flex; gap:.5rem">
+              <button id="searchBySkillsBtn">Search</button>
+              <button id="clearSearchBtn" class="muted-btn">Clear</button>
+            </div>
+          </div>
+          <div id="searchResult" style="margin-top:.6rem"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right column: Create / Add Project / Detail -->
+    <div>
+      <section class="card">
+        <h2>Create Profile</h2>
+        <form id="createForm" novalidate>
+          <label>Name<input name="name" required /></label>
+          <label>Email<input name="email" type="email" required /></label>
+
+          <div class="section">
+            <div class="section-title">Education <button type="button" id="addEduBtn" class="small">+ Add</button></div>
+            <div id="eduContainer"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Skills <small class="muted">press Enter or comma to add</small></div>
+            <div id="skillsWrap">
+              <input id="skillInput" placeholder="Add a skill and press Enter" />
+              <div id="skillsList" class="chips"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Projects <button type="button" id="addProjBtn" class="small">+ Add</button></div>
+            <div id="projContainer"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Work <button type="button" id="addWorkBtn" class="small">+ Add</button></div>
+            <div id="workContainer"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Links</div>
+            <label>GitHub<input name="links.github" placeholder="https://github.com/..." /></label>
+            <label>LinkedIn<input name="links.linkedin" placeholder="https://linkedin.com/..." /></label>
+            <label>Portfolio<input name="links.portfolio" placeholder="https://..." /></label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit">Create Profile</button>
+            <span id="createStatus" class="muted"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Add Project</h2>
+        <form id="addProjectForm" novalidate>
+          <label>Profile ID (owner)<input name="profileId" placeholder="profile id" /></label>
+          <label>Title<input name="title" required /></label>
+          <label>Description<textarea name="description" rows="3"></textarea></label>
+          <label>Links (comma separated)<input name="links" placeholder="https://..., https://..." /></label>
+          <div class="form-actions">
+            <button type="submit">Add Project</button>
+            <span id="addProjectStatus" class="muted"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Profile Detail / Update</h2>
+        <div id="detail" class="detail">Use the ID field + Get to load a profile for editing.</div>
+
+        <form id="updateForm" style="display:none" novalidate>
+          <input type="hidden" name="id" />
+          <label>Name<input name="name" required /></label>
+          <label>Email<input name="email" type="email" required /></label>
+
+          <div class="section">
+            <div class="section-title">Education <button type="button" id="updAddEduBtn" class="small">+ Add</button></div>
+            <div id="updEduContainer"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Skills</div>
+            <div id="updSkillsWrap">
+              <input id="updSkillInput" placeholder="Add a skill and press Enter" />
+              <div id="updSkillsList" class="chips"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Projects <button type="button" id="updAddProjBtn" class="small">+ Add</button></div>
+            <div id="updProjContainer"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Work <button type="button" id="updAddWorkBtn" class="small">+ Add</button></div>
+            <div id="updWorkContainer"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Links</div>
+            <label>GitHub<input name="links.github" /></label>
+            <label>LinkedIn<input name="links.linkedin" /></label>
+            <label>Portfolio<input name="links.portfolio" /></label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit">Update Profile</button>
+            <span id="updateStatus" class="muted"></span>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite" class="toast"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
