@@ -3,7 +3,8 @@
    BASE set to your provided playground URL.
 */
 const API = (function(){
-  const BASE = "https://me-api-playground-g057.onrender.com";
+  const BASE = window.location.origin;
+
   const endpoints = {
     // Profile endpoints
     create: BASE + "/api/Profile/Create_profile",                            
